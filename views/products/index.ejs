@@ -1,0 +1,179 @@
+<!-- <h1>All Products</h1>
+<a href="/products/new">Create New Product</a>
+
+<ul>
+  <% products.forEach(product => { %>
+    <li>
+      <a href="/products/<%= product._id %>"><%= product.name %></a>
+      <% if(currUser && currUser._id.equals(product.user)) {%>
+      <a href="/products/<%= product._id %>/edit">Edit</a>
+      <form action="/products/<%= product._id %>?_method=DELETE" method="POST">
+        <button type="submit">Delete</button>
+      </form>
+      <%}%>
+    </li>
+  <% }) %>
+</ul> -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>All Products - GreenByte</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+    <style>
+      /* Custom Transition for Images */
+      .transition-transform {
+        transition: transform 0.3s ease-in-out;
+      }
+      .transition-transform:hover {
+        transform: scale(1.05);
+      }
+
+      /* Remove underline from links and add eco-friendly colors */
+      a {
+        text-decoration: none;
+        color: #2f855a; /* Tailwind green-700 for an eco-friendly vibe */
+      }
+      a:hover {
+        color: #276749; /* Darker green on hover */
+      }
+
+      /* Styles for the Create New Product Link */
+      .create-new-product {
+        background-color: #34d399; /* Tailwind green-400 */
+        color: white;
+        padding: 12px 24px;
+        border-radius: 8px;
+        font-size: 18px;
+        font-weight: bold;
+        text-decoration: none;
+        display: inline-block;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+        position: relative;
+        z-index: 10; /* Ensure it's above other elements */
+      }
+      .create-new-product:hover {
+        background-color: #10b981; /* Tailwind green-500 */
+        transform: scale(1.05);
+      }
+
+      /* Adjust spacing to avoid navbar overlap */
+      .main-content {
+        margin-top: 80px; /* Adjust based on the height of your navbar */
+      }
+
+      /* Button Styles */
+      .btn-green {
+        background-color: #38a169; /* Tailwind green-600 */
+        color: white;
+        padding: 8px 16px;
+        border-radius: 4px;
+        text-decoration: none;
+        transition: background-color 0.3s ease;
+      }
+      .btn-green:hover {
+        background-color: #2f855a; /* Darker green on hover */
+      }
+
+      /* Product Hover Effect */
+      .product-card:hover {
+        cursor: pointer;
+      }
+      /* Custom Transition for Images */
+      .transition-transform {
+        transition: transform 0.3s ease-in-out;
+      }
+      .transition-transform:hover {
+        transform: scale(1.05);
+      }
+    </style>
+  </head>
+
+  <body class="bg-green-50 text-gray-800">
+    <!-- Include the Navbar -->
+    <%- include('../includes/navbar') %>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-6 py-12 main-content">
+      <div class="text-center mb-12">
+        <a href="/products/new" class="create-new-product">
+          <span class="mr-2 text-2xl">+</span> Add New Product
+        </a>
+      </div>
+
+      <h1 class="text-3xl font-bold mb-8 text-center text-green-700">
+        Explore Our Products
+      </h1>
+
+      <section class="mb-12">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <!-- Loop through products -->
+          <% products.forEach(function(product) { %>
+          <div
+          class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-transform duration-300 transform hover:translate-y-[-10px]"
+          >
+            <div class="relative">
+              <% if (product.images && product.images.length > 0) { %>
+                <img
+                src="<%= product.images[0].url %>"
+                alt="<%= product.name %>"
+                style="width: 100%; height: 300px; object-fit: cover;"
+                class="w-full h-48 object-cover mb-4 transform rounded-lg hover:scale-105 transition-transform duration-300"
+              />
+              
+              <% } else { %>
+              <p>No image available</p>
+              <% } %>
+              <div
+                class="absolute inset-0 bg-black bg-opacity-25 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300"
+              >
+                <span class="text-white font-bold"><%= product.name %></span>
+              </div>
+            </div>
+            <h3 class="text-xl font-semibold text-green-600 mb-2">
+              <%= product.name %>
+            </h3>
+            <p class="text-gray-700 mb-4"><%= product.description %></p>
+            <p class="text-lg font-bold text-gray-900 mb-4">
+              $<%= product.price %>
+            </p>
+            
+            <div class="flex justify-between items-center">
+              <% if (currUser && (currUser._id== product.user._id || currUser.role === 'admin')) { %>
+                <form
+                action="/products/<%= product._id %>?_method=DELETE"
+                method="POST"
+                class="inline-block"
+              >
+                <button type="submit" class="btn-green">
+                  <i class="fas fa-trash-alt mr-1"></i> Delete
+                </button>
+              </form>
+              <a href="/products/<%= product._id %>/edit" class="btn-green">
+                <i class="fas fa-edit mr-1"></i> Edit
+              </a>
+              <%}%>
+
+              <a href="/products/<%= product._id %>" class="btn-green">
+                <i class="fas fa-eye mr-1"></i> View
+              </a>
+            </div>
+          </div>
+          <% }); %>
+        </div>
+      </section>
+    </main>
+
+    <!-- Include the Footer -->
+    <%- include('../includes/footer') %>
+  </body>
+</html>

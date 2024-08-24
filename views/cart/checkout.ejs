@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - GreenByte</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+</head>
+
+<body class="bg-green-50 text-gray-800">
+
+    <!-- Include the Navbar -->
+    <%- include('../includes/navbar') %>
+
+    <main class="container mx-auto px-6 py-12 flex items-center justify-center min-h-screen">
+        <div class="bg-white shadow-lg rounded-lg p-8 max-w-md w-full text-center">
+            <h1 class="text-3xl font-bold mb-8 text-green-700">Checkout</h1>
+            <!-- Razorpay Button -->
+            <div class="flex justify-center">
+                <button id="rzp-button1" class="btn-green text-lg px-6 py-3 rounded-lg border border-green-700 hover:bg-green-700 hover:text-white">
+                    <i class="fas fa-money-bill mr-2"></i> Own Checkout
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script>
+        var options = {
+            key: "rzp_test_1DP5mmOlF5G5ag", // Enter the Key ID generated from the Dashboard
+            amount: "120000", // Example amount in paise
+            currency: "INR",
+            description: "GreenByte",
+            image: "example.com/image/rzp.jpg",
+            prefill: {
+                email: "ghanghasashwani@gmail.com",
+                contact: "+919900000000",
+            },
+            config: {
+                display: {
+                    blocks: {
+                        utib: {
+                            name: "Pay using Axis Bank",
+                            instruments: [
+                                {
+                                    method: "card",
+                                    issuers: ["UTIB"],
+                                },
+                                {
+                                    method: "netbanking",
+                                    banks: ["UTIB"],
+                                },
+                            ],
+                        },
+                        other: {
+                            name: "Other Payment modes",
+                            instruments: [
+                                {
+                                    method: "card",
+                                    issuers: ["ICIC"],
+                                },
+                                {
+                                    method: "netbanking",
+                                },
+                            ],
+                        },
+                        banks: {
+                            name: "Most Used Methods",
+                            instruments: [
+                                {
+                                    method: "wallet",
+                                    wallets: ["freecharge"],
+                                },
+                                {
+                                    method: "upi",
+                                },
+                            ],
+                        },
+                    },
+                    sequence: ["block.utib", "block.other", "block.banks"],
+                    hide: [
+                        {
+                            method: "upi",
+                        },
+                    ],
+                    preferences: {
+                        show_default_blocks: false,
+                    },
+                },
+            },
+            handler: function (response) {
+                alert(response.razorpay_payment_id);
+            },
+            modal: {
+                ondismiss: function () {
+                    if (confirm("Are you sure, you want to close the form?")) {
+                        console.log("Checkout form closed by the user");
+                    } else {
+                        console.log("Complete the Payment");
+                    }
+                },
+            },
+        };
+        var rzp1 = new Razorpay(options);
+        document.getElementById("rzp-button1").onclick = function (e) {
+            rzp1.open();
+            e.preventDefault();
+        };
+    </script>
+
+    <!-- Include the Footer -->
+    <%- include('../includes/footer') %>
+
+</body>
+
+</html>

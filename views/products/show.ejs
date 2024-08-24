@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= product.name %> - GreenByte</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        /* Remove underline from links */
+        a {
+            text-decoration: none;
+        }
+
+        /* Adjust spacing to avoid navbar overlap */
+        .main-content {
+            margin-top: 80px; /* Adjust based on the height of your navbar */
+        }
+
+        /* Star Ratings */
+        .star-rating {
+            display: flex;
+            direction: row-reverse;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: #FFD700;
+        }
+
+        .star-rating input {
+            display: none;
+        }
+
+        .star-rating label {
+            cursor: pointer;
+        }
+
+        .star-rating label::before {
+            content: '\f005';
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 900;
+        }
+
+        .star-rating input:checked ~ label {
+            color: #FFD700;
+        }
+
+        .star-rating input:checked ~ label ~ label {
+            color: #ccc;
+        }
+
+        .star-rating input:checked ~ input ~ label {
+            color: #ccc;
+        }
+
+        /* Product Hover Effect */
+        .product-card:hover {
+            cursor: pointer;
+        }
+
+        /* Border Radius for Product Description */
+        
+
+        /* Buy Button Style */
+        .buy-button {
+            background-color: #4caf50;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.375rem;
+            border: none;
+            cursor: pointer;
+            font-size: 1.125rem;
+            transition: background-color 0.3s ease;
+        }
+
+        .buy-button:hover {
+            background-color: #45a049;
+        }
+
+        /* Zoom Effect Styles */
+        .zoom-container {
+            position: relative;
+            display: inline-block;
+            overflow: hidden;
+        }
+
+        .zoom-container img {
+            transition: transform 0.3s ease;
+        }
+
+        .zoom-effect {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+            cursor: zoom-in;
+        }
+
+        .zoom-effect img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            transform: scale(2);
+            transform-origin: top left;
+            transition: transform 0.3s ease;
+        }
+        .reviews-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Two columns of equal width */
+    gap: 1rem; /* Space between items */
+}
+
+.review-item {
+    /* Optional: Adjust the width of each item */
+    width: 100%;
+}
+
+    </style>
+</head>
+
+
+
+<body class="bg-green-50 text-gray-800">
+    <!-- Include the Navbar -->
+    <%- include('../includes/navbar') %>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-6 py-12 main-content">
+        <!-- Product Information Section -->
+        <div class="bg-white p-8 rounded-lg shadow-md product-details">
+            <div class="flex flex-col lg:flex-row">
+                <!-- Product Image -->
+                <div class="lg:w-1/2 mb-6 lg:mb-0 zoom-container">
+                    <img src="<%= product.images[0].url%>" alt="<%= product.name %>" class="w-full h-64 object-cover rounded-lg transition-transform duration-300 hover:scale-105" style="height: 400px; border-radius: 5px;">
+                    <div class="zoom-effect">
+                        <img src="<%= product.images[0].url %>" alt="<%= product.name %>" class="w-full h-full" style="border-radius: 5px;">
+                    </div>
+                </div>
+                <!-- Product Details -->
+                <div class="lg:w-1/2 lg:pl-8">
+                    <h1 class="text-3xl font-bold text-green-600 mb-4"><%= product.name %></h1>
+                    <p class="text-gray-700 mb-4 product-description"><%= product.description %></p>
+                    <p class="text-gray-900 font-semibold mb-2">Category: <span class="font-normal"><%= product.category %></span></p>
+                    <p class="text-gray-900 font-semibold mb-2">Price: <span class="text-green-600">$<%= product.price %></span></p>
+                    <p class="text-gray-900 font-semibold mb-6">Condition: <span class="font-normal"><%= product.condition %></span></p>
+                    
+                    <% if (currUser) { %>
+                        <form action="/cart/add/<%= product._id %>" method="POST">
+                          <div class="btn-container">
+                            <button type="submit" class="btn btn-primary">Add to Cart</button>
+                          </div>
+                        </form>
+                        <% } else { %>
+                        <p><a href="/login">Login</a> or <a href="/signup">SignUp</a> to add this product to your cart.</p>
+                        <% } %>
+                  </div>
+                </div>
+            </div>
+        </div>
+   <!-- Reviews Section -->
+<section class="mt-12">
+    <h2 class="text-2xl font-bold text-gray-800 mb-6">Reviews</h2>
+    <% if (reviews && reviews.length > 0) { %>
+        <div class="reviews-grid">
+            <% reviews.forEach(review => { %>
+                <div class="review-item bg-white p-4 rounded-lg shadow-md" >
+                    <div class="star-rating-container" style="padding-right: 80%;">
+                        <div class="star-rating">
+                            <% for (let i = 1; i <= 5; i++) { %>
+                                <input type="radio" id="star<%= i %>" name="rating<%= review._id %>" value="<%= i %>" <%= review.rating >= i ? 'checked' : '' %> disabled />
+                                <label for="star<%= i %>"></label>
+                            <% } %>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h3 class="ml-2"><strong><%=currUser ? currUser.username : 'Anonymous' %></strong></h3>
+                        <p><%= review.comment %></p>
+                    </div>
+                    
+                    <p class="text-sm text-gray-600">Reviewed on: <%= review.createdAt.toDateString() %></p>
+                    
+                    <% if(currUser && currUser._id.equals(review.user._id)) { %>
+                        <div class="review-actions">
+                            <form action="/products/<%= product._id %>/reviews/<%= review._id %>?_method=DELETE" method="POST" style="display:inline;">
+                                <button type="submit" class="text-red-600 hover:text-red-700 ml-2">
+                                    <i class="fas fa-trash"></i> Delete
+                                </button>
+                            </form>
+                        </div>
+                    <% } %>
+                </div>
+            <% }); %>
+        </div>
+    <% } else { %>
+        <p class="text-gray-700">No reviews yet.</p>
+    <% } %>
+</section>
+
+  
+          <!-- Write a Review Section -->
+          <!-- Write a Review Section -->
+  <section class="mt-12">
+    <div class="max-w-4xl mx-auto px-4"> <!-- Container for centering and margins -->
+      <h3 class="text-2xl font-bold text-gray-800 mb-6 text-center">Write a Review</h3>
+      <form action="/products/<%= product._id %>/reviews" method="POST" class="bg-white p-6 rounded-lg shadow-md transition-transform transform hover:translate-y-[-4px] hover:shadow-lg">
+        <div class="flex items-center mb-4">
+          <div class="star-rating">
+            <% for (let i = 1; i <= 5; i++) { %>
+              <input type="radio" id="new-star<%= i %>" name="rating" value="<%= i %>" <%= i === 3 ? 'checked' : '' %> />
+              <label for="new-star<%= i %>"></label>
+            <% } %>
+          </div>
+        </div>
+        <textarea name="comment" placeholder="Your review" class="w-full p-2 mb-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600" rows="4"></textarea>
+        <input type="hidden" name="user" value="<%= defaultUserId %>" />
+        <button type="submit" class="bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition duration-300">Submit</button>
+      </form>
+    </div>
+  </section>
+    </main>
+
+    <!-- Include the Footer -->
+    <%- include('../includes/footer') %>
+
+    <!-- Include Scripts -->
+    <script>
+        // Zoom effect logic
+        document.querySelectorAll('.zoom-container').forEach(container => {
+            const img = container.querySelector('img');
+            const zoomImg = container.querySelector('.zoom-effect img');
+            container.addEventListener('mousemove', e => {
+                const rect = container.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                zoomImg.style.transform = `scale(2) translate(-${x}px, -${y}px)`;
+            });
+        });
+    </script>
+</body>
+
+</html>

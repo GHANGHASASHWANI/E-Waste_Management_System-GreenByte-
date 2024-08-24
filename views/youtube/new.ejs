@@ -1,0 +1,114 @@
+<!-- <form action="/youtube/new" method="POST">
+  <label for="title">Title:</label>
+  <input type="text" id="title" name="title" required />
+
+  <label for="videoUrl">Video URL:</label>
+  <input type="url" id="videoUrl" name="videoUrl" required />
+
+  <label for="description">Description:</label>
+  <textarea id="description" name="description"></textarea>
+
+  <label for="imageUrl">Image URL:</label>
+  <input type="url" id="imageUrl" name="imageUrl" />
+
+  <label for="views">Views:</label>
+  <input type="number" id="views" name="views" value="0" />
+
+  <label for="likes">Likes:</label>
+  <input type="number" id="likes" name="likes" value="0" />
+
+  <label for="dislikes">Dislikes:</label>
+  <input type="number" id="dislikes" name="dislikes" value="0" />
+
+  <button type="submit">Add Video</button>
+</form> -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add New Video</title>
+
+  <!-- Tailwind CSS CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+
+  <style>
+    body {
+      padding-top: 4rem; /* Adjust this value based on your navbar's height */
+    }
+    .main-content {
+      margin-bottom: 4rem; /* Space between content and footer */
+    }
+  </style>
+</head>
+
+<body class="bg-green-50">
+
+  <!-- Include Navbar -->
+  <%- include('../includes/navbar') %>
+
+  <!-- Main Content Container -->
+  <div class="main-content max-w-4xl mx-auto mt-10 p-6 bg-white shadow-lg rounded-lg">
+    <h1 class="text-2xl font-bold text-center text-green-600 mb-8">Add New Video</h1>
+    <p class="text-center text-green-900 mb-6">Please fill out the form below to add a new video to the platform.</p>
+
+    <form action="/youtube/new" method="POST" class="space-y-6">
+      
+      <!-- Video Title -->
+      <div class="form-group">
+        <label for="title" class="block text-gray-700 font-semibold mb-2">Title:</label>
+        <input type="text" id="title" name="title" class="form-input w-full p-2 border border-gray-300 rounded" placeholder="Enter video title" required>
+      </div>
+
+      <!-- Video URL -->
+      <div class="form-group">
+        <label for="videoUrl" class="block text-gray-700 font-semibold mb-2">Video URL:</label>
+        <input type="url" id="videoUrl" name="videoUrl" class="form-input w-full p-2 border border-gray-300 rounded" placeholder="Enter video URL" required>
+      </div>
+
+      <!-- Description -->
+      <div class="form-group">
+        <label for="description" class="block text-gray-700 font-semibold mb-2">Description:</label>
+        <textarea id="description" name="description" class="form-input w-full p-2 border border-gray-300 rounded" rows="4" placeholder="Enter video description"></textarea>
+      </div>
+
+      <!-- Image URL -->
+      <div class="form-group">
+        <label for="imageUrl" class="block text-gray-700 font-semibold mb-2">Image URL:</label>
+        <input type="url" id="imageUrl" name="imageUrl" class="form-input w-full p-2 border border-gray-300 rounded" placeholder="Enter image URL">
+      </div>
+
+      <!-- Views -->
+      <div class="form-group">
+        <label for="views" class="block text-gray-700 font-semibold mb-2">Views:</label>
+        <input type="number" id="views" name="views" class="form-input w-full p-2 border border-gray-300 rounded" value="0">
+      </div>
+
+      <!-- Likes -->
+      <div class="form-group">
+        <label for="likes" class="block text-gray-700 font-semibold mb-2">Likes:</label>
+        <input type="number" id="likes" name="likes" class="form-input w-full p-2 border border-gray-300 rounded" value="0">
+      </div>
+
+      <!-- Dislikes -->
+      <div class="form-group">
+        <label for="dislikes" class="block text-gray-700 font-semibold mb-2">Dislikes:</label>
+        <input type="number" id="dislikes" name="dislikes" class="form-input w-full p-2 border border-gray-300 rounded" value="0">
+      </div>
+
+      <!-- Submit Button -->
+      <div class="text-center">
+        <button type="submit" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">Add Video</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Include Footer -->
+  <%- include('../includes/footer') %>
+
+</body>
+
+</html>

@@ -1,0 +1,190 @@
+<!-- <!DOCTYPE html>
+<html>
+  <head>
+    <title>New Auction</title>
+  </head>
+  <body>
+    <h1>New Auction</h1>
+    <form action="/auction" method="POST">
+      <label for="product">Product ID:</label>
+      <input type="text" name="product" id="product" required />
+
+      <label for="startingBid">Starting Bid:</label>
+      <input type="number" name="startingBid" id="startingBid" required />
+
+      <label for="currentBid">Current Bid:</label>
+      <input type="number" name="currentBid" id="currentBid" value="0" />
+
+      <label for="startingDate">Starting Date:</label>
+      <input
+        type="datetime-local"
+        name="startingDate"
+        id="startingDate"
+        required
+      />
+
+      <label for="auctionEndTime">Auction End Time:</label>
+      <input
+        type="datetime-local"
+        name="auctionEndTime"
+        id="auctionEndTime"
+        required
+      />
+
+      <label for="url">Product URL:</label>
+      <input type="url" name="url" id="url" required />
+
+      <button type="submit">Create Auction</button>
+    </form>
+    <a href="/auction">Back to Auctions</a>
+  </body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>New Auction</title>
+
+    <!-- Tailwind CSS CDN -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+
+    <style>
+      body {
+        padding-top: 4rem; /* Adjust this value based on your navbar's height */
+      }
+      .main-content {
+        margin-bottom: 4rem; /* Space between content and footer */
+      }
+    </style>
+  </head>
+
+  <body class="bg-green-50">
+    <!-- Include Navbar -->
+    <%- include('../includes/navbar') %>
+
+    <!-- Main Content Container -->
+    <div
+      class="main-content max-w-4xl mx-auto mt-10 p-6 bg-white shadow-lg rounded-lg"
+    >
+      <h1 class="text-2xl font-bold text-center text-green-600 mb-8">
+        Create New Auction
+      </h1>
+      <p class="text-center text-green-900 mb-6">
+        Please fill out the form below to create a new auction.
+      </p>
+
+      <form action="/auction" method="POST" class="space-y-6">
+        <!-- Product ID -->
+        <div class="form-group">
+          <label for="product" class="block text-gray-700 font-semibold mb-2"
+            >Product ID:</label
+          >
+          <input
+            type="text"
+            name="product"
+            id="product"
+            class="form-input w-full p-2 border border-gray-300 rounded"
+            placeholder="Enter product ID"
+            required
+          />
+        </div>
+
+        <!-- Starting Bid -->
+        <div class="form-group">
+          <label
+            for="startingBid"
+            class="block text-gray-700 font-semibold mb-2"
+            >Starting Bid:</label
+          >
+          <input
+            type="number"
+            name="startingBid"
+            id="startingBid"
+            class="form-input w-full p-2 border border-gray-300 rounded"
+            placeholder="Enter starting bid"
+            required
+          />
+        </div>
+
+        <!-- Current Bid -->
+        <div class="form-group">
+          <label for="currentBid" class="block text-gray-700 font-semibold mb-2"
+            >Current Bid:</label
+          >
+          <input
+            type="number"
+            name="currentBid"
+            id="currentBid"
+            class="form-input w-full p-2 border border-gray-300 rounded"
+            value="0"
+          />
+        </div>
+
+        <!-- Starting Date -->
+        <div class="form-group">
+          <label
+            for="startingDate"
+            class="block text-gray-700 font-semibold mb-2"
+            >Starting Date:</label
+          >
+          <input
+            type="datetime-local"
+            name="startingDate"
+            id="startingDate"
+            class="form-input w-full p-2 border border-gray-300 rounded"
+            required
+          />
+        </div>
+
+        <!-- Auction End Time -->
+        <div class="form-group">
+          <label
+            for="auctionEndTime"
+            class="block text-gray-700 font-semibold mb-2"
+            >Auction End Time:</label
+          >
+          <input
+            type="datetime-local"
+            name="auctionEndTime"
+            id="auctionEndTime"
+            class="form-input w-full p-2 border border-gray-300 rounded"
+            required
+          />
+        </div>
+
+        <!-- Product URL -->
+        <div class="form-group">
+          <label for="url" class="block text-gray-700 font-semibold mb-2"
+            >Product URL:</label
+          >
+          <input
+            type="url"
+            name="url"
+            id="url"
+            class="form-input w-full p-2 border border-gray-300 rounded"
+            placeholder="Enter product image URL"
+            required
+          />
+        </div>
+
+        <!-- Submit Button -->
+        <div class="text-center">
+          <button
+            type="submit"
+            class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded"
+          >
+            Create Auction
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Include Footer -->
+    <%- include('../includes/footer') %>
+  </body>
+</html>

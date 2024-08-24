@@ -1,0 +1,89 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Update Product</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    body {
+      padding-top: 4rem; /* Adjust this value based on your navbar's height */
+    }
+    .main-content {
+      margin-bottom: 4rem; /* Space between content and footer */
+      margin-top: 5rem;
+    }
+  </style>
+</head>
+
+<body class="bg-green-50">
+
+  <!-- Include Navbar -->
+   
+  <%- include('../includes/navbar') %>
+
+  <!-- Main Content -->
+  <div class="max-w-4xl mx-auto mt-10 p-6 bg-white shadow-lg rounded-lg main-content">
+    <h2 class="text-2xl font-bold text-center text-green-600 mb-8">Update Product</h2>
+    <form action="/products/<%= product._id %>?_method=PUT" method="POST"  novalidate class="space-y-6 needs-validation">
+
+      <div class="form-group">
+        <label for="name" class="block text-gray-700 font-semibold mb-2">Name:</label>
+        <input type="text" name="product[name]" id="name" class="form-input w-full p-2 border border-gray-300 rounded" value="<%= product.name %>" required>
+       
+      </div>
+
+      <div class="form-group">
+        <label for="description" class="block text-gray-700 font-semibold mb-2">Description:</label>
+        <textarea name="product[description]" id="description" class="form-input w-full p-2 border border-gray-300 rounded" rows="4"><%= product.description %></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="imageUpload" class="block text-gray-700 font-semibold mb-2">Upload Image:</label>
+        <input type="file" name="imageUpload" id="imageUpload" class="form-input w-full p-2 border border-gray-300 rounded">
+        <p class="text-sm text-gray-500 mt-2">Or provide an image URL below</p>
+        <label for="imageUrl" class="block text-gray-700 font-semibold mb-2">Image URL:</label>
+        <input type="text" name="product[imageUrl]" id="imageUrl" class="form-input w-full p-2 border border-gray-300 rounded" value="<%= product.imageUrl %>">
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="form-group">
+          <label for="category" class="block text-gray-700 font-semibold mb-2">Category:</label>
+          <input type="text" name="product[category]" id="category" class="form-input w-full p-2 border border-gray-300 rounded" value="<%= product.category %>" required>
+        </div>
+        <div class="form-group">
+          <label for="price" class="block text-gray-700 font-semibold mb-2">Price:</label>
+          <input type="number" name="product[price]" id="price" class="form-input w-full p-2 border border-gray-300 rounded" value="<%= product.price %>" required>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="condition" class="block text-gray-700 font-semibold mb-2">Condition:</label>
+        <select name="product[condition]" id="condition" class="form-select w-full p-2 border border-gray-300 rounded" required>
+          <option value="New" <%= product.condition === 'New' ? 'selected' : '' %>>New</option>
+          <option value="Used" <%= product.condition === 'Used' ? 'selected' : '' %>>Used</option>
+          <option value="Refurbished" <%= product.condition === 'Refurbished' ? 'selected' : '' %>>Refurbished</option>
+        </select>
+      </div>
+
+      <div class="btn-container text-center">
+        <button type="submit" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">Submit</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Include Footer -->
+  <%- include('../includes/footer') %>
+
+</body>
+
+</html>
+
+  
+
+

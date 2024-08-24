@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Auction Details - GreenByte</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+    <style>
+      .auction-details {
+        border-radius: 1.75rem; /* Tailwind rounded-md */
+        overflow: hidden;
+      }
+
+      .auction-image {
+        height: 400px;
+        object-fit: cover;
+        border-radius: 1.75rem;
+      }
+
+      .btn-green {
+        background-color: #38a169;
+        color: white;
+      }
+
+      .btn-green:hover {
+        background-color: #2f855a;
+      }
+
+      .btn-red {
+        background-color: #e53e3e;
+        color: white;
+      }
+
+      .btn-red:hover {
+        background-color: #c53030;
+      }
+
+      /* Chat area styles */
+      .chat-area {
+        position: fixed;
+        bottom: 0;
+        right: 0;
+        width: 300px;
+        height: 400px;
+        background-color: white;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-radius: 10px 0 0 0;
+        display: none; /* Hidden by default */
+        overflow-y: auto;
+        z-index: 1000;
+      }
+
+      .chat-header {
+        background-color: #38a169;
+        color: white;
+        padding: 10px;
+        font-weight: bold;
+        border-radius: 10px 10px 0 0;
+      }
+
+      .chat-messages {
+        padding: 10px;
+      }
+
+      .chat-input {
+        display: flex;
+        border-top: 1px solid #e5e7eb;
+      }
+
+      .chat-input input {
+        border: none;
+        padding: 10px;
+        flex: 1;
+      }
+
+      .chat-input button {
+        background-color: #38a169;
+        color: white;
+        border: none;
+        padding: 10px;
+      }
+
+      .chat-toggle-button {
+        position: fixed;
+        bottom: 0;
+        right: 0;
+        color: black;
+        border: none;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        cursor: pointer;
+        z-index: 1000;
+      }
+      .centered-button {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: yellow;
+        color: black;
+        border: none;
+        border-radius: 5px;
+        padding: 15px 30px;
+        font-size: 18px;
+        font-weight: bold;
+        cursor: pointer;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        z-index: 1000;
+      }
+    </style>
+  </head>
+
+  <body class="bg-gray-100 text-gray-800">
+    <!-- Include the Navbar -->
+    <%- include('../includes/navbar') %>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-6 py-12" style="margin-top: 50px;">
+      <div class="bg-white p-8 rounded-lg shadow-md auction-details">
+        <h1 class="text-3xl font-bold text-green-600 mb-4">Auction Details</h1>
+        <div class="flex flex-col lg:flex-row">
+          <!-- Auction Image -->
+          <div class="lg:w-1/2 mb-6 lg:mb-0">
+            <img
+              src="<%= auction.url %>"
+              alt="Auction Image"
+              class="w-full auction-image"
+            />
+          </div>
+          <!-- Auction Details -->
+          <div class="lg:w-1/2 lg:pl-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">
+              Product: <%= auction.product %>
+            </h2>
+            <p class="text-gray-700 mb-4">
+              <strong>Starting Bid:</strong> $<%= auction.startingBid.toFixed(2)
+              %>
+            </p>
+            <p class="text-gray-700 mb-4">
+              <strong>Current Bid:</strong> $<%= auction.currentBid ?
+              auction.currentBid.toFixed(2) : 'No bids yet' %>
+            </p>
+            <p class="text-gray-700 mb-4">
+              <strong>Creation Time:</strong> <%= new
+              Date(auction.createdAt).toLocaleString() %>
+            </p>
+            <p class="text-gray-700 mb-4">
+              <strong>Auction End Time:</strong> <%= new
+              Date(auction.auctionEndTime).toLocaleString() %>
+            </p>
+
+            <h3 class="text-lg font-semibold mt-6 mb-2">Bid History</h3>
+            <% if (auction.bids.length > 0) { %>
+            <ul class="list-group">
+              <% auction.bids.forEach(function(bid) { %>
+              <li class="list-group-item bg-gray-50 p-2 rounded-lg mb-2">
+                <strong><%= bid.bidder %></strong>: $<%= bid.amount.toFixed(2)
+                %> at <%= new Date(bid.timestamp).toLocaleString() %>
+              </li>
+              <% }); %>
+            </ul>
+            <% } else { %>
+            <p>No bids yet.</p>
+            <% } %> <% if (auction.winner) { %>
+            <h3 class="text-lg font-semibold mt-6 mb-2">Winner</h3>
+            <p class="text-gray-700 mb-4"><%= auction.winner %></p>
+            <% } else { %> <% } %>
+          </div>
+        </div>
+
+        <div class="flex justify-between items-center mt-6">
+          <% if (currUser && currUser.role === 'admin') { %>
+
+          <a
+            href="/auction/<%= auction._id %>/edit"
+            class="btn-green px-4 py-2 rounded-lg"
+          >
+            <i class="fas fa-edit mr-1"></i> Edit Auction
+          </a>
+          <form
+            action="/auction/<%= auction._id %>?_method=DELETE"
+            method="POST"
+            class="inline-block"
+          >
+            <button type="submit" class="btn-red px-4 py-2 rounded-lg">
+              <i class="fas fa-trash-alt mr-1"></i> Delete Auction
+            </button>
+          </form>
+          <%}%>
+          <a href="/auction" class="text-blue-600 hover:underline">
+            <i class="fas fa-arrow-left mr-1"></i> Back to Auctions
+          </a>
+        </div>
+      </div>
+      <br />
+      <br />
+
+      <div class="chat-container" id="chatContainer" style="height: 400px">
+        <div class="chat-header">Chat</div>
+        <div class="chat-messages" id="chatMessages" style="margin-top: 250px">
+          <button></button>
+        </div>
+        <div class="chat-input">
+          <input type="text" id="chatInput" placeholder="Type a message..." />
+          <button id="sendMessage">Send</button>
+        </div>
+        <button class="chat-toggle-button" id="chatToggleButton">
+          <i class="fas fa-lock"></i>
+        </button>
+      </div>
+    </main>
+    <!-- Chat Toggle Button -->
+
+    <!-- Include the Footer -->
+    <%- include('../includes/footer') %>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const chatArea = document.getElementById("chatArea");
+        const chatToggleButton = document.getElementById("chatToggleButton");
+        const chatInput = document.getElementById("chatInput");
+        const sendMessageButton = document.getElementById("sendMessage");
+        const chatMessages = document.getElementById("chatMessages");
+
+        // Check auction start time
+        const auctionStartTime = new Date(
+          "<%= new Date(auction.startingDate).toISOString() %>"
+        );
+        const now = new Date();
+
+        // Function to toggle chat area visibility
+        function toggleChat() {
+          if (
+            chatArea.style.display === "none" ||
+            chatArea.style.display === ""
+          ) {
+            chatArea.style.display = "block";
+          } else {
+            chatArea.style.display = "none";
+          }
+        }
+
+        // Set the chat button to 'LOCKED' if auction has not started
+        if (now < auctionStartTime) {
+          chatToggleButton.innerHTML = '<i class="fas fa-lock"></i> Locked';
+          chatToggleButton.disabled = true;
+        } else {
+          chatToggleButton.innerHTML =
+            '<i class="fas fa-comment-dots"></i> Chat';
+          chatToggleButton.disabled = false;
+          chatToggleButton.addEventListener("click", toggleChat);
+        }
+
+        // Send message functionality (implement your chat sending logic here)
+        sendMessageButton.addEventListener("click", function () {
+          const message = chatInput.value.trim();
+          if (message) {
+            const messageElement = document.createElement("p");
+            messageElement.textContent = message;
+            chatMessages.appendChild(messageElement);
+            chatInput.value = "";
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

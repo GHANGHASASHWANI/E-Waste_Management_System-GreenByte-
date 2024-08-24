@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Vouchers - GreenByte</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <style>
+        /* Custom Transition for Images */
+        .transition-transform {
+            transition: transform 0.3s ease-in-out;
+        }
+        .transition-transform:hover {
+            transform: scale(1.05);
+        }
+
+        /* Remove underline from links and add eco-friendly colors */
+        a {
+            text-decoration: none;
+            color: #2f855a; /* Tailwind green-700 for an eco-friendly vibe */
+        }
+        a:hover {
+            color: #276749; /* Darker green on hover */
+        }
+
+        /* Styles for the Create New Voucher Link */
+        .create-new-voucher {
+            background-color: #34d399; /* Tailwind green-400 */
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            text-decoration: none;
+            display: inline-block;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            position: relative;
+            z-index: 10; /* Ensure it's above other elements */
+        }
+        .create-new-voucher:hover {
+            background-color: #10b981; /* Tailwind green-500 */
+            transform: scale(1.05);
+        }
+
+        /* Button Styles */
+        .btn-green {
+            background-color: #38a169; /* Tailwind green-600 */
+            color: white;
+            padding: 8px 16px;
+            border-radius: 4px;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+        .btn-green:hover {
+            background-color: #2f855a; /* Darker green on hover */
+        }
+
+        /* Image Styling */
+        .voucher-image {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body class="bg-green-50 text-gray-800">
+    <!-- Include the Navbar -->
+    <%- include('../includes/navbar') %>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-6 py-12">
+        <% if (currUser && currUser.role === 'admin') { %>
+        <div class="text-center mb-12">
+            <a href="/vouchers/new" class="create-new-voucher">
+                <span class="mr-2 text-2xl">+</span> Create New Voucher
+            </a>
+        </div>
+        <%}%>
+
+        <h1 class="text-3xl font-bold mb-8 text-center text-green-700">
+            All Vouchers
+        </h1>
+
+        <section class="mb-12">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Loop through vouchers -->
+                <% vouchers.forEach(function(voucher) { %>
+                <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-transform duration-300 transform hover:translate-y-[-10px]">
+                    <div class="relative">
+                        <% if (voucher.url) { %>
+                        <img
+                            src="<%= voucher.url %>"
+                            alt="<%= voucher.code %> Image"
+                            class="voucher-image transition-transform duration-300 hover:scale-105"
+                        />
+                        <% } else { %>
+                        <div class="bg-gray-200 h-48 flex items-center justify-center rounded-lg">
+                            <p>No image available</p>
+                        </div>
+                        <% } %>
+                    </div>
+                    <div class="mt-4">
+                        <h3 class="text-xl font-semibold text-green-600 mb-2">
+                            <%= voucher.code %>
+                        </h3>
+                        <p class="text-gray-700 mb-2"><strong>Discount:</strong> <%= voucher.discount %>%</p>
+                        <p class="text-gray-700 mb-2"><strong>Ecoscore Required:</strong> <%= voucher.ecoscoreRequired %></p>
+                        <% if (voucher.description) { %>
+                        <p class="text-gray-700 mb-2"><strong>Description:</strong> <%= voucher.description %></p>
+                        <% } %>
+                        <% if (voucher.expiryDate) { %>
+                        <p class="text-gray-700 mb-2"><strong>Expiry Date:</strong> <%= voucher.expiryDate.toDateString() %></p>
+                        <% } %>
+                    </div>
+                    <div class="flex justify-between items-center mt-4">
+                        <a href="/vouchers/<%= voucher._id %>/buy" class="btn-green">
+                            <i class="fas fa-shopping-cart mr-1"></i> Redeem
+                        </a>
+                        <% if (currUser && currUser.role === 'admin') { %>
+                        <a href="/vouchers/<%= voucher._id %>/edit" class="btn-green">
+                            <i class="fas fa-edit mr-1"></i> Edit
+                        </a>
+                        <form action="/vouchers/<%= voucher._id %>?_method=DELETE" method="POST" class="inline-block">
+                            <button type="submit" class="btn-green">
+                                <i class="fas fa-trash-alt mr-1"></i> Delete
+                            </button>
+                        </form>
+                        <% }%>
+                    </div>
+                </div>
+                <% }); %>
+            </div>
+        </section>
+    </main>
+
+    <!-- Include the Footer -->
+    <%- include('../includes/footer') %>
+</body>
+</html>

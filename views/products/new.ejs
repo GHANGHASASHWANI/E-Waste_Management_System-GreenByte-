@@ -1,0 +1,116 @@
+<!-- 
+<h1>Create New Product</h1>
+<form action="/products" method="POST">
+  <label>Name:</label>
+  <input type="text" name="product[name]" required>
+
+  <label>Description:</label>
+  <textarea name="product[description]"></textarea>
+
+  <label>Category:</label>
+  <input type="text" name="product[category]" required>
+
+  <label>Price:</label>
+  <input type="number" name="product[price]" required>
+
+  <label>Condition:</label>
+  <select name="product[condition]" required>
+    <option value="New">New</option>
+    <option value="Used">Used</option>
+    <option value="Refurbished">Refurbished</option>
+  </select>
+
+ 
+  <label>Image URL</label>
+  <input type="text" name="product[images][0][url]" placeholder="Enter Image URL">
+ 
+  <button type="submit">Create Product</button>
+</form> -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add New Product</title>
+
+  <!-- Tailwind CSS CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+
+  <style>
+    body {
+      padding-top: 4rem; /* Adjust this value based on your navbar's height */
+    }
+    .main-content {
+      margin-bottom: 4rem; /* Space between content and footer */
+    }
+  </style>
+</head>
+
+<body class="bg-green-50">
+
+  <!-- Include Navbar -->
+  <%- include('../includes/navbar') %>
+
+  <!-- Main Content Container -->
+  <div class="main-content max-w-4xl mx-auto mt-10 p-6 bg-white shadow-lg rounded-lg">
+    <h1 class="text-2xl font-bold text-center text-green-600 mb-8">Add New Product</h1>
+    <p class="text-center text-green-900 mb-6">Please fill out the form below to add a new product to the GreenByte marketplace.</p>
+
+    <form action="/products" method="POST" class="space-y-6">
+      
+      <!-- Product Name -->
+      <div class="form-group">
+        <label for="name" class="block text-gray-700 font-semibold mb-2">Name:</label>
+        <input type="text" name="product[name]" id="name" class="form-input w-full p-2 border border-gray-300 rounded" placeholder="Enter product name" required>
+      </div>
+
+      <!-- Product Description -->
+      <div class="form-group">
+        <label for="description" class="block text-gray-700 font-semibold mb-2">Description:</label>
+        <textarea name="product[description]" id="description" class="form-input w-full p-2 border border-gray-300 rounded" rows="4" placeholder="Enter product description"></textarea>
+      </div>
+
+      <!-- Image Upload or URL -->
+      <div class="form-group">
+       <label for="imageUrl" class="block text-gray-700 font-semibold mb-2">Image URL:</label>
+        <input type="text" name="product[images][0][url]" id="imageUrl" class="form-input w-full p-2 border border-gray-300 rounded" placeholder="Enter image URL">
+      </div>
+
+      <!-- Category -->
+      <div class="form-group">
+        <label for="category" class="block text-gray-700 font-semibold mb-2">Category:</label>
+        <input type="text" name="product[category]" id="category" class="form-input w-full p-2 border border-gray-300 rounded" placeholder="Enter product category" required>
+      </div>
+
+      <!-- Price -->
+      <div class="form-group">
+        <label for="price" class="block text-gray-700 font-semibold mb-2">Price:</label>
+        <input type="number" name="product[price]" id="price" class="form-input w-full p-2 border border-gray-300 rounded" placeholder="Enter product price" required>
+      </div>
+
+      <!-- Condition -->
+      <div class="form-group">
+        <label for="condition" class="block text-gray-700 font-semibold mb-2">Condition:</label>
+        <select name="product[condition]" id="condition" class="form-select w-full p-2 border border-gray-300 rounded" required>
+          <option value="New">New</option>
+          <option value="Used">Used</option>
+          <option value="Refurbished">Refurbished</option>
+        </select>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="text-center">
+        <button type="submit" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">Add Product</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Include Footer -->
+  <%- include('../includes/footer') %>
+
+</body>
+
+</html>
+

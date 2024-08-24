@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Auction - GreenByte</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f0f4f8; /* Sustainable theme background */
+        }
+        .content-container {
+            max-width: 600px; /* Set maximum width for the form container */
+            margin: 2rem auto; /* Center container with margin */
+            padding: 2rem;
+            background-color: #ffffff;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease; /* Smooth transition for hover effect */
+        }
+        .content-container:hover {
+            transform: translateY(-5px); /* Lift the container slightly on hover */
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        .form-group label {
+            display: block;
+            font-size: 1rem;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 0.375rem;
+            font-size: 1rem;
+            color: #34495e;
+        }
+        .form-group input:focus, .form-group textarea:focus {
+            border-color: #4caf50;
+            outline: none;
+            box-shadow: 0 0 0 1px #4caf50;
+        }
+        .action-buttons {
+            text-align: center;
+            margin-top: 2rem;
+        }
+        .action-buttons button {
+            display: inline-block;
+            background-color: #4caf50;
+            color: #fff;
+            padding: 0.75rem 1.5rem;
+            margin: 0.5rem;
+            border-radius: 0.375rem;
+            text-decoration: none;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+        .action-buttons button:hover {
+            background-color: #45a049;
+            transform: translateY(-2px);
+        }
+        .back-link {
+            display: block;
+            margin-top: 2rem;
+            color: #4caf50;
+            text-align: center;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .back-link:hover {
+            color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <!-- Include Navbar -->
+    <%- include('../includes/navbar.ejs') %>
+
+    <div class="content-container mx-auto px-4 sm:px-6 lg:px-8">
+        <h1 class="text-3xl font-bold text-center mb-6">Edit Auction</h1>
+        
+        <form action="/auction/<%= auction._id %>?_method=PUT" method="POST">
+            <div class="form-group">
+                <label for="product">Product ID:</label>
+                <input
+                    type="text"
+                    name="product"
+                    id="product"
+                    value="<%= auction.product %>"
+                    required
+                />
+            </div>
+            <div class="form-group">
+                <label for="startingBid">Starting Bid:</label>
+                <input
+                    type="number"
+                    name="startingBid"
+                    id="startingBid"
+                    value="<%= auction.startingBid %>"
+                    required
+                />
+            </div>
+            <div class="form-group">
+                <label for="currentBid">Current Bid:</label>
+                <input
+                    type="number"
+                    name="currentBid"
+                    id="currentBid"
+                    value="<%= auction.currentBid %>"
+                />
+            </div>
+            <div class="form-group">
+                <label for="auctionEndTime">Auction End Time:</label>
+                <input
+                    type="datetime-local"
+                    name="auctionEndTime"
+                    id="auctionEndTime"
+                    value="<%= new Date(auction.auctionEndTime).toISOString().slice(0,16) %>"
+                    required
+                />
+            </div>
+            <div class="form-group">
+                <label for="startingDate">Starting Date:</label>
+                <input
+                    type="datetime-local"
+                    name="startingDate"
+                    id="startingDate"
+                    value="<%= new Date(auction.startingDate).toISOString().slice(0,16) %>"
+                    required
+                />
+            </div>
+            <div class="form-group">
+                <label for="url">Product Image URL:</label>
+                <input
+                    type="text"
+                    name="url"
+                    id="url"
+                    value="<%= auction.url %>"
+                    required
+                />
+            </div>
+            <div class="action-buttons">
+                <button type="submit">Update Auction</button>
+            </div>
+        </form>
+
+        <a href="/auction/<%= auction._id %>" class="back-link">Back to Auction</a>
+    </div>
+
+    <!-- Include Footer -->
+    <%- include('../includes/footer.ejs') %>
+</body>
+</html>
